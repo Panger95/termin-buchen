@@ -29,6 +29,11 @@ async function runner(
     console.log(`[runner]: iteration ${i} result: ${found}\n`);
     if (found) {
       onSuccess();
+      console.log(`Passport First Name: ${config.passportFirstName}\n`);
+      console.log(`Passport Last Name: ${config.passportLastName}\n`);
+      console.log(`Email Address: ${config.emailAddress}\n`);
+      console.log(`Date of Birth: ${config.dateOfBirth}\n`);
+      console.log(`Existing Visa Number: ${config.existingVisaNumber}\n`);
       return;
     }
     await wd.sleep(config.checkInterval);
