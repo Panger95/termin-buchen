@@ -72,13 +72,13 @@ PURPOSE=16b
 Termin not found, another attempt in 60 seconds:
 
 ```
-[runner]: iteration 1 result: false`
+[runner]: iteration 1 result: false
 ```
 
 Termin found – take the window from background and continue booking your termin.
 
 ```
-[runner]: iteration 1 result: true`
+[runner]: iteration 1 result: true
 ```
 
 Important notes:
