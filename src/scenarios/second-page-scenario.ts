@@ -121,6 +121,9 @@ export class SecondPageScenario {
     } else if (purpose === '28p2') {
       text =
         'Permanent settlement permit for family members of German citizens (sect. 28 para. 2)';
+    } else if (purpose === '29d32') {
+      text =
+        'Residence permit for spouses and children of skilled workers, students, trainees, scientists and teachers (sect. 29-32)';
     } else if (purpose === '19c2') {
       text =
         'Residence permit for skilled employment in information and communication technology (sect. 19c para. 2)';

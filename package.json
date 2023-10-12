@@ -21,7 +21,7 @@
     "posttest": "npm run lint"
   },
   "dependencies": {
-    "chromedriver": "^116.0.0",
+    "chromedriver": "^117.0.0",
     "dotenv": "^16.3.1",
     "node-notifier": "^10.0.1",
     "node-telegram-bot-api": "^0.61.0",
