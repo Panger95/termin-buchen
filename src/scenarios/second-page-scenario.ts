@@ -110,8 +110,7 @@ export class SecondPageScenario {
     if (purpose === '18p2') {
       text = 'EU Blue Card / Blaue Karte EU (sect. 18b para. 2)';
     } else if (purpose === '16b') {
-      text =
-        'Residence permit for the purpose of studying (sect. 16b)';
+      text = 'Residence permit for the purpose of studying (sect. 16b)';
     } else if (purpose === '21p5') {
       text =
         'Residence permit for a freelance employment - Issuance (sect. 21 para. 5)';

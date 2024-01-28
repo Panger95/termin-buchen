@@ -2,7 +2,14 @@ import {CHECK_INTERVAL} from './const';
 
 export type ApplyCategory = 'apply' | 'extend' | 'apply_permanent';
 export type ApplyReason = 'educational' | 'economic' | 'family' | 'empty';
-export type ApplyPurpose = '18p2' | '16b' | '21p5' | 'sect28' | '28p2' | '29d32' | '19c2';
+export type ApplyPurpose =
+  | '18p2'
+  | '16b'
+  | '21p5'
+  | 'sect28'
+  | '28p2'
+  | '29d32'
+  | '19c2';
 
 interface Config {
   telegramToken: string;
@@ -34,7 +41,8 @@ export const config: Config = (() => {
     mainCitizenship: process.env.MAIN_CITIZENSHIP || 'United States of America',
     numberOfPeople: process.env.NUMBER_OF_PEOPLE || 'one person',
     liveWith: process.env.LIVE_WITH || 'no',
-    partnerCitizenship: process.env.PARTNER_CITIZENSHIP || 'United States of America',
+    partnerCitizenship:
+      process.env.PARTNER_CITIZENSHIP || 'United States of America',
     category: (() => {
       if (
         process.env.CATEGORY !== 'apply' &&
