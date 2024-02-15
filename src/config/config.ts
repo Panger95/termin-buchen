@@ -1,15 +1,8 @@
-import {CHECK_INTERVAL} from './const';
+import {CHECK_INTERVAL} from '../const';
+import {ApplyPurpose} from './apply-purpose';
 
-export type ApplyCategory = 'apply' | 'extend' | 'apply_permanent';
-export type ApplyReason = 'educational' | 'economic' | 'family' | 'empty';
-export type ApplyPurpose =
-  | '18p2'
-  | '16b'
-  | '21p5'
-  | 'sect28'
-  | '28p2'
-  | '29d32'
-  | '19c2';
+export type ApplyCategory = 'apply' | 'extend' | 'transfer' | 'apply_permanent';
+export type ApplyReason = 'economic' | 'family' | 'educational' | 'empty';
 
 interface Config {
   telegramToken: string;
@@ -20,7 +13,7 @@ interface Config {
   partnerCitizenship: string;
   category: ApplyCategory;
   reason: ApplyReason;
-  purpose: ApplyPurpose;
+  purpose: keyof typeof ApplyPurpose;
   checkInterval: number;
   passportFirstName: string;
   passportLastName: string;
@@ -41,12 +34,12 @@ export const config: Config = (() => {
     mainCitizenship: process.env.MAIN_CITIZENSHIP || 'United States of America',
     numberOfPeople: process.env.NUMBER_OF_PEOPLE || 'one person',
     liveWith: process.env.LIVE_WITH || 'no',
-    partnerCitizenship:
-      process.env.PARTNER_CITIZENSHIP || 'United States of America',
+    partnerCitizenship: process.env.PARTNER_CITIZENSHIP || 'United States of America',
     category: (() => {
       if (
         process.env.CATEGORY !== 'apply' &&
         process.env.CATEGORY !== 'extend' &&
+        process.env.CATEGORY !== 'transfer' &&
         process.env.CATEGORY !== 'apply_permanent'
       ) {
         throw new Error('CATEGORY config value is unknown');
@@ -55,9 +48,9 @@ export const config: Config = (() => {
     })(),
     reason: (() => {
       if (
-        process.env.REASON !== 'educational' &&
         process.env.REASON !== 'economic' &&
         process.env.REASON !== 'family' &&
+        process.env.REASON !== 'educational' &&
         process.env.REASON !== 'empty'
       ) {
         throw new Error('REASON config value is unknown');
@@ -65,18 +58,10 @@ export const config: Config = (() => {
       return process.env.REASON;
     })(),
     purpose: (() => {
-      if (
-        process.env.PURPOSE !== '18p2' &&
-        process.env.PURPOSE !== '16b' &&
-        process.env.PURPOSE !== '21p5' &&
-        process.env.PURPOSE !== 'sect28' &&
-        process.env.PURPOSE !== '28p2' &&
-        process.env.PURPOSE !== '29d32' &&
-        process.env.PURPOSE !== '19c2'
-      ) {
+      if (!Object.keys(ApplyPurpose).includes(process.env.PURPOSE || '')) {
         throw new Error('PURPOSE config value is unknown');
       }
-      return process.env.PURPOSE;
+      return process.env.PURPOSE as keyof typeof ApplyPurpose;
     })(),
     checkInterval: parseInt(
       process.env.CHECK_INTERVAL || CHECK_INTERVAL.toString(),

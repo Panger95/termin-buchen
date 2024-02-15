@@ -3,6 +3,7 @@ import {config} from '../config';
 import {Utils} from '../utils';
 import {FirstPageScenario} from './first-page-scenario';
 import {SecondPageScenario} from './second-page-scenario';
+import {ERR_MESSAGE_TIMEOUT} from "../const";
 
 /**
  * Returns true if slot found
@@ -22,22 +23,39 @@ export const findSlot = async (wd: WebDriver): Promise<boolean> => {
     config.partnerCitizenship
   );
   await SecondPageScenario.selectApplyCategory(wd, config.category);
-  await SecondPageScenario.selectApplyReason(wd, config.reason);
+  if (config.category !== 'transfer') {
+    await SecondPageScenario.selectApplyReason(wd, config.reason);
+  }
   await SecondPageScenario.selectApplyPurpose(wd, config.purpose);
   await SecondPageScenario.waitForLoadingScreen(wd);
   await SecondPageScenario.clickNext(wd);
 
   try {
+    await Utils.waitUntilVisible(
+      wd,
+      By.xpath('//*[contains(text(),\'Appointment selection\')]')
+    );
+    console.log(`[findSlot]: found calendar`);
+    return !await existsErrorBox(wd)
+  } catch (e) {
+    console.error(`[findSlot]: appointment not found ${e}`);
+    return false;
+  }
+};
+
+async function existsErrorBox(wd: WebDriver) {
+  try {
     // const dateSelector = '//*[@id="xi-fs-2"]';
     const box = await Utils.waitUntilVisible(
       wd,
-      By.xpath('//*[@id="messagesBox"]/ul/li')
+      By.xpath('//*[@id="messagesBox"]/ul/li'),
+      ERR_MESSAGE_TIMEOUT
     );
     const text = await box.getText();
-    console.log(`[findSlot]: ${text}`);
+    console.error(`[findSlot]: messagesBox found. reason: ${text}`);
+    return true
   } catch (e) {
-    console.error(`[findSlot]: error ${e}`);
-    return true;
+    console.info(`[findSlot]: error finding messagesBox: ${e}`);
+    return false
   }
-  return false;
-};
+}

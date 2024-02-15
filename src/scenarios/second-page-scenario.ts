@@ -66,6 +66,8 @@ export class SecondPageScenario {
       text = 'Extend a residence title';
     } else if (category === 'apply') {
       text = 'Apply for a residence title';
+    } else if (category === 'transfer') {
+      text = 'Transfer of a Residence title to a new passport';
     } else if (category === 'apply_permanent') {
       text = 'Apply for a permanent settlement permit';
     }
@@ -81,16 +83,15 @@ export class SecondPageScenario {
   }
 
   static async selectApplyReason(wd: WebDriver, reason: ApplyReason) {
-    let text = '';
-    if (reason === 'educational') {
-      text = 'Educational purposes';
-    } else if (reason === 'economic') {
-      text = 'Economic activity';
-    } else if (reason === 'family') {
-      text = 'Family reasons';
-    } else if (reason === 'empty') {
+    const reasonToText: {[key: string]: string} = {
+      economic: 'Economic activity',
+      family: 'Family reasons',
+      educational: 'Educational purposes',
+    };
+    if (reason === 'empty') {
       return;
     }
+    const text = reasonToText[reason];
     if (!text) {
       throw new Error('Apply reason is not valid');
     }
@@ -105,30 +106,13 @@ export class SecondPageScenario {
     await label.click();
   }
 
-  static async selectApplyPurpose(wd: WebDriver, purpose: ApplyPurpose) {
-    let text = '';
-    if (purpose === '18p2') {
-      text = 'EU Blue Card / Blaue Karte EU (sect. 18b para. 2)';
-    } else if (purpose === '16b') {
-      text = 'Residence permit for the purpose of studying (sect. 16b)';
-    } else if (purpose === '21p5') {
-      text =
-        'Residence permit for a freelance employment - Issuance (sect. 21 para. 5)';
-    } else if (purpose === 'sect28') {
-      text =
-        'Residence permit for spouses, parents and children of German citizens (sect. 28)';
-    } else if (purpose === '28p2') {
-      text =
-        'Permanent settlement permit for family members of German citizens (sect. 28 para. 2)';
-    } else if (purpose === '29d32') {
-      text =
-        'Residence permit for spouses and children of skilled workers, students, trainees, scientists and teachers (sect. 29-32)';
-    } else if (purpose === '19c2') {
-      text =
-        'Residence permit for skilled employment in information and communication technology (sect. 19c para. 2)';
-    }
+  static async selectApplyPurpose(
+    wd: WebDriver,
+    purpose: keyof typeof ApplyPurpose
+  ) {
+    const text = ApplyPurpose[purpose];
     if (!text) {
-      throw new Error('Apply reason is not valid');
+      throw new Error('Apply purpose is not valid');
     }
     const input = await Utils.waitUntilVisible(
       wd,
